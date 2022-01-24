@@ -26,8 +26,8 @@ export class UserService {
         });
 
         if(User !== undefined) {
+            console.error();
             throw Error;
-            console.error()
         }
 
         await this.userRepository.save(user);
