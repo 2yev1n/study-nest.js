@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Board } from "src/board/board.entity";
+import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -13,4 +14,10 @@ export class User {
 
     @Column()
     username: string;
+
+    @OneToMany(
+        (type) => Board, 
+        (board) => board.user,
+        )
+    boards: Board[];
 }
