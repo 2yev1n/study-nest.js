@@ -11,8 +11,8 @@ import { BoardModule } from './board/board.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot(), UserModule, AuthModule, BoardModule],
-  controllers: [AppController, BoardController],
-  providers: [AppService, Auth, BoardService],
+  controllers: [AppController],
+  providers: [AppService, Auth,],
 })
 
 export class AppModule {}
