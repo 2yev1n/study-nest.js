@@ -19,5 +19,5 @@ export class User {
         (type) => Board, 
         (board) => board.user,
         )
-    boards: Board[];
+    board: Board[];
 }
