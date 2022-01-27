@@ -1,9 +1,9 @@
 import { IsString } from "class-validator";
 
-export class CreateBoardDto {
+export class BoardDto {
     @IsString()
     title: string;
 
     @IsString()
-    text: Text;
+    text: string;
 }
