@@ -17,7 +17,7 @@ export class User {
 
     @OneToMany(
         (type) => Board, 
-        (board) => board.user,
+        (board) => board.user_ID,
         )
     board: Board[];
 }
