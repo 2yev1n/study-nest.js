@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { Board } from './board.entity';
 import { BoardDto } from './dto/board.dto';
@@ -11,14 +12,19 @@ export class BoardService {
         private readonly board: Repository<Board>,
     ) {}
 
-    CreatePost(CreateBoardDto: BoardDto) {
-        this.board.create(CreateBoardDto);
-        return this.board.save(CreateBoardDto);
+    async CreatePost(CreateBoardDto: BoardDto, user: User) {
+        const board = new Board();
+
+        board.title = CreateBoardDto.title;
+        board.text = CreateBoardDto.text;
+        board.user_ID = user.userID;
+
+        const CreatedBoard = await this.board.save(board);
     }
 
     GetPostList() {
         return this.board.find({
-            select: ["title", "text", "user", "createDate"],
+            select: ["title", "text", "user_ID", "createDate"],
             order: { createDate: -1 }
         });
     }
