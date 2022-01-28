@@ -28,5 +28,5 @@ export class Board {
         { nullable : false }
     )
     @JoinColumn({ name: "user_ID" })
-    user: User;
+    user_ID: number;
 }
