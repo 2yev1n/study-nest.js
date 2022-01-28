@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
+import { User } from 'src/user/user.entity';
 import { BoardService } from './board.service';
 import { BoardDto } from './dto/board.dto';
 
@@ -9,10 +11,16 @@ export class BoardController {
    
    
     
-    @Post() 
     @UseGuards(JwtAuthGuard)
-    async create(@Body() CreateBoardDto: BoardDto) {
-        const post = await this.boardService.CreatePost(CreateBoardDto);
+    @Post()
+    async create(
+        @Body() CreateBoardDto: BoardDto,
+        @Req() req: Request,
+        ) {
+        const post = await this.boardService.CreatePost(
+            CreateBoardDto,
+            req.user as User,
+            );
         return post;
     }
 
