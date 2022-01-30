@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
-import { Request, response } from 'express';
+import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { User } from 'src/user/user.entity';
 import { BoardService } from './board.service';
@@ -38,10 +38,13 @@ export class BoardController {
 
     @UseGuards(JwtAuthGuard)
     @Patch(":board_id")
-    async editPost(@Param("board_id") board_id:number, @Body() editBoardDto: BoardDto) {
-        await this.boardService.EditPost(board_id, editBoardDto);
+    async editPost(
+        @Param("board_id") board_id:number, 
+        @Body() editBoardDto: BoardDto, 
+        @Req() req:Request,
+        ) {
+        await this.boardService.EditPost(board_id, editBoardDto, req.user as User);
         const post = await this.boardService.GetPost(board_id);
-
         return { status: 200, message: "수정 성공", post};
     }
 
