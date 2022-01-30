@@ -32,8 +32,15 @@ export class BoardService {
         return this.board.findOne(board_id);
     }
 
-    async EditPost(board_id: number, EditBoardDto: BoardDto) {
-        await this.board.update(board_id, EditBoardDto);
+    async EditPost(board_id: number, EditBoardDto: BoardDto, user: User) {
+        console.log((await this.board.findOne(board_id)));
+        console.log(user.userID);
+        if((await this.board.findOne(board_id)).user_ID == user.userID)
+        {
+            await this.board.update(board_id, EditBoardDto);    
+        }
+        else throw Error;
+        
     }
 
     DeletePost(board_id: number) {
