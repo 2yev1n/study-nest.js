@@ -33,7 +33,7 @@ export class BoardService {
     }
 
     async EditPost(board_id: number, EditBoardDto: BoardDto, user: User) {
-        console.log((await this.board.findOne(board_id)));
+        console.log((await this.board.findOne(board_id)).user_ID);
         console.log(user.userID);
         if((await this.board.findOne(board_id)).user_ID == user.userID)
         {
