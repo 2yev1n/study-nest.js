@@ -20,6 +20,8 @@ export class BoardService {
         board.user_ID = user.userID;
 
         const CreatedBoard = await this.board.save(board);
+
+        console.log(board.user_ID);
     }
 
     GetPostList() {
@@ -33,9 +35,13 @@ export class BoardService {
     }
 
     async EditPost(board_id: number, EditBoardDto: BoardDto, user: User) {
-        console.log((await this.board.findOne(board_id)).user_ID);
-        console.log(user.userID);
-        if((await this.board.findOne(board_id)).user_ID == user.userID)
+        const Board = await this.board.findOne({
+            where: {
+                boardID : board_id,
+                user_ID : user.userID
+            }
+        });
+        if(Board !== undefined)
         {
             await this.board.update(board_id, EditBoardDto);    
         }
@@ -43,8 +49,18 @@ export class BoardService {
         
     }
 
-    DeletePost(board_id: number) {
-        return this.board.delete(board_id);
+    async DeletePost(board_id: number, user: User) {
+        const Board = await this.board.findOne({
+            where: {
+                boardID : board_id,
+                user_ID : user.userID
+            }
+        })
+        if(Board !== undefined)
+        {
+            return this.board.delete(board_id);
+        }
+        else throw Error;
     }
 
 }
