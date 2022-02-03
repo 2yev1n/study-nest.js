@@ -50,8 +50,11 @@ export class BoardController {
 
     @UseGuards(JwtAuthGuard)
     @Delete(":board_id")
-    async DeletePost(@Param("board_id") board_id: number) {
-        await this.boardService.DeletePost(board_id);
+    async DeletePost(
+        @Param("board_id")  board_id: number,
+        @Req() req:Request,
+        ) {
+        await this.boardService.DeletePost(board_id, req.user as User);
         return { status : 200, message: "삭제 성공" };
     }
 }
