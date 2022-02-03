@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
@@ -20,8 +20,6 @@ export class BoardService {
         board.user_ID = user.userID;
 
         const CreatedBoard = await this.board.save(board);
-
-        console.log(board.user_ID);
     }
 
     GetPostList() {
@@ -45,8 +43,11 @@ export class BoardService {
         {
             await this.board.update(board_id, EditBoardDto);    
         }
-        else throw Error;
-        
+        else throw new ForbiddenException({
+            statusCode: HttpStatus.FORBIDDEN,
+            messgae: "작성자가 다름",
+            error: 'Forbidden',
+        })
     }
 
     async DeletePost(board_id: number, user: User) {
@@ -60,7 +61,11 @@ export class BoardService {
         {
             return this.board.delete(board_id);
         }
-        else throw Error;
+        else throw new ForbiddenException({
+            statusCode: HttpStatus.FORBIDDEN,
+            messgae: "작성자가 다름",
+            error: 'Forbidden',
+        })
     }
 
 }
